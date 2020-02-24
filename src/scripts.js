@@ -1,4 +1,6 @@
 
+
+
 // called when the user clicks the get my pros button
 function getStats()  {
 
@@ -55,6 +57,8 @@ function makeQuery(college, league) {
 
 }
 
+
+// right now it just prints
 function display(data) {
     console.log(data);
 }
