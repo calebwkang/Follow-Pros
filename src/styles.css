@@ -1,0 +1,15 @@
+
+/*styles for the table view of player stats*/
+table {
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+p.table {
+    padding: 10px;
+}
