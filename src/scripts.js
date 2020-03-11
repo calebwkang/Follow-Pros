@@ -34,15 +34,7 @@ function makeQuery(college, league) {
 
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
-
-            data = this.response;
-
-            var players = data.api.players
-
-            var filtered = filteredByCollege(players, college)
-
-            // display data
-            display(filtered);
+            processRequest(this, college);
         }
     });
 
@@ -69,6 +61,22 @@ function filteredByCollege(players, college) {
     }
 
     return result;
+}
+
+/* this method processes the completed request.
+Takes in the request object, gets players filtered
+by the specified college. then proceeds to display data*/
+function processRequest(request, college) {
+
+    // get all players
+    data = request.response;
+    var players = data.api.players
+
+    // filter by college
+    var filtered = filteredByCollege(players, college)
+
+    // display data
+    display(filtered);
 }
 
 
