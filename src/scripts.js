@@ -1,6 +1,4 @@
 
-
-
 // called when the user clicks the get my pros button
 function getStats()  {
 
@@ -21,12 +19,12 @@ function getStats()  {
 
         // makes query
         var data = makeQuery(college.text, league.text);
-
     }
 }
 
 // In: two strings representing the college and the league
-// Out: an array out player objects from college and in league
+// queries for players. filters by college and league
+// and displays data
 function makeQuery(college, league) {
     var data = null;
 
@@ -45,7 +43,6 @@ function makeQuery(college, league) {
 
             // display data
             display(filtered);
-
         }
     });
 
@@ -53,16 +50,14 @@ function makeQuery(college, league) {
     xhr.setRequestHeader("x-rapidapi-host", "api-nba-v1.p.rapidapi.com");
     xhr.setRequestHeader("x-rapidapi-key", "ab71a41c90mshf97209670d5d649p1c1145jsn9b9737f9b673");
     xhr.send(data);
-
-
 }
 
-
-// right now it just prints
 function display(data) {
     console.log(data);
 }
 
+/*IN: an array of player objects and a String name of a college
+OUT: an array of players who went to that college*/
 function filteredByCollege(players, college) {
     
     var result = [];
@@ -74,7 +69,6 @@ function filteredByCollege(players, college) {
     }
 
     return result;
-    
 }
 
 
