@@ -6,26 +6,18 @@ function getStats()  {
     var collegeSelect = document.getElementById("collegeSelect");
     var college = collegeSelect.options[collegeSelect.selectedIndex];
 
-    // get the league seleted
-    var leagueSelect = document.getElementById("leagueSelect");
-    var league = leagueSelect.options[leagueSelect.selectedIndex];
-
     // ensures user has selected both values
-    if (college.value == "default" || league.value == "default") {
-
-        this.alert("Select a college and a league");
-
+    if (college.value == "default") {
+        this.alert("Select a college");
     } else {
-
-        // makes query
-        var data = makeQuery(college.text, league.text);
+        makeQuery(college.text);
     }
 }
 
 // In: two strings representing the college and the league
 // queries for players. filters by college and league
 // and displays data
-function makeQuery(college, league) {
+function makeQuery(college) {
     var data = null;
 
     var xhr = new XMLHttpRequest();
@@ -44,7 +36,7 @@ function makeQuery(college, league) {
     xhr.send(data);
 }
 
-function display(data) {
+function print(data) {
     console.log(data);
 }
 
@@ -67,16 +59,17 @@ function filteredByCollege(players, college) {
 Takes in the request object, gets players filtered
 by the specified college. then proceeds to display data*/
 function processRequest(request, college) {
+    print("response:")
+    print(request.response)
 
-    // get all players
-    data = request.response;
-    var players = data.api.players
+    // get all playes
+    var players = request.response.api.players
 
     // filter by college
     var filtered = filteredByCollege(players, college)
 
     // display data
-    display(filtered);
+    //display(filtered);
 }
 
 
