@@ -26,6 +26,7 @@ function makeQuery(college) {
 
     xhr.addEventListener("readystatechange", function () {
         if (this.readyState === this.DONE) {
+            this.responseURL
             processRequest(this, college);
         }
     });
@@ -43,7 +44,6 @@ function print(data) {
 /*IN: an array of player objects and a String name of a college
 OUT: an array of players who went to that college*/
 function filteredByCollege(players, college) {
-    
     var result = [];
 
     for (i=0; i<players.length; i++) {
@@ -66,10 +66,49 @@ function processRequest(request, college) {
     var players = request.response.api.players
 
     // filter by college
-    var filtered = filteredByCollege(players, college)
+    var collegePlayers = filteredByCollege(players, college)
 
     // display data
-    //display(filtered);
+    display(collegePlayers);
+}
+
+function display(players) {
+    configureTable()
+    fillTable(players)
+}
+
+function configureTable() {
+    var table = document.getElementById("table").getElementsByTagName("tbody")[0]
+    var headerRow = table.insertRow()
+    
+    var nameCell = headerRow.insertCell(0)
+    var nameText = document.createTextNode("NAME")
+    nameCell.appendChild(nameText)
+
+    var pointsCell = headerRow.insertCell(1)
+    var pointsText = document.createTextNode("Stats")
+    pointsCell.appendChild(pointsText)
 }
 
 
+function fillTable(players) {
+    for (i=0; i<players.length; i++) {
+        var player = players[i]
+        formatRow(player)
+    }
+}
+
+function formatRow(player) {
+    var table = document.getElementById("table").getElementsByTagName("tbody")[0]
+    var row = table.insertRow()
+    
+    var nameCell = row.insertCell(0)
+    var name = document.createTextNode(player.firstName + " " + player.lastName)
+    nameCell.appendChild(name)
+
+    var pointsCell = row.insertCell(1)
+    var pointsText = document.createTextNode("some points")
+    pointsCell.appendChild(pointsText)
+
+    return row
+}
