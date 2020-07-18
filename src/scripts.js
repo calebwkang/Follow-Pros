@@ -82,11 +82,15 @@ function configureTable() {
     var headerRow = table.insertRow()
     
     var nameCell = headerRow.insertCell(0)
-    var nameText = document.createTextNode("NAME")
+    var nameText = document.createElement('strong')
+    nameText.innerHTML = 'NAME'
+    nameCell.setAttribute('class', 'name')
     nameCell.appendChild(nameText)
 
     var pointsCell = headerRow.insertCell(1)
-    var pointsText = document.createTextNode("Stats")
+    var pointsText = document.createElement('strong')
+    pointsText.innerHTML = "STATS"
+    pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
 }
 
@@ -104,10 +108,13 @@ function formatRow(player) {
     
     var nameCell = row.insertCell(0)
     var name = document.createTextNode(player.firstName + " " + player.lastName)
+    nameCell.setAttribute('class', 'name')
     nameCell.appendChild(name)
+    
 
     var pointsCell = row.insertCell(1)
     var pointsText = document.createTextNode("some points")
+    pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
 
     return row
