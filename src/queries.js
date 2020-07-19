@@ -1,3 +1,9 @@
+var playersModel = []
+let placeHolderPlayer = {
+    firstName: "first",
+    lastName: "last"
+}
+
 function makeQuery(type, data1) {
     var data = null;
 
@@ -11,10 +17,12 @@ function makeQuery(type, data1) {
             print(this.response)
 
             switch(type) {
-                case QueryType.PLAYER_ID:
-                    processPlayerStatsRequest(this)
+                case QueryType.PLAYER_STATS:
+                    processPlayerStatsRequest(this, data1)
+                    break
                 case QueryType.PLAYERS:
                     processPlayersRequest(this, data1)
+                    break
             }
         }
     });
@@ -22,8 +30,8 @@ function makeQuery(type, data1) {
     var header = type
 
     switch(type) {
-        case QueryType.PLAYER_ID:
-            header += data1
+        case QueryType.PLAYER_STATS:
+            header += playersModel[data1].playerId
     }
 
     xhr.open("GET", "https://api-nba-v1.p.rapidapi.com/" + header);
@@ -35,7 +43,7 @@ function makeQuery(type, data1) {
 /* this method processes the completed request for 
 getting all players*/
 function processPlayersRequest(request, college) {
-    print("playeresponse:")
+    print("players response:")
     print(request.response)
     
     // get all playes
@@ -48,9 +56,13 @@ function processPlayersRequest(request, college) {
     display(collegePlayers);
 }
 
-function processPlayerStatsRequest(request) {
-    let stats = request.response.api.players[0]
-    print(player.st)
+function processPlayerStatsRequest(request, playerIndex) {
+    print("player id stats: ")
+    let stats = request.response.api.statistics
+    let lastGame = stats[stats.length-1]
+    print(lastGame)
+
+    formatPoints(lastGame, playerIndex)
 }
 
 /*IN: an array of player objects and a String name of a college
@@ -61,6 +73,7 @@ function filteredByCollege(players, college) {
     for (i=0; i<players.length; i++) {
         if (players[i].collegeName.localeCompare(college) == 0) {
             result.push(players[i]);
+            playersModel.push(players[i])
         }
     }
 
@@ -68,7 +81,6 @@ function filteredByCollege(players, college) {
 }
 
 function display(players) {
-    configureTable()
     fillTable(players)
 }
 
@@ -88,6 +100,8 @@ function configureTable() {
     pointsText.innerHTML = "STATS"
     pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
+
+    playersModel.push(placeHolderPlayer)
 }
 
 
@@ -107,11 +121,16 @@ function formatRow(player) {
     nameCell.setAttribute('class', 'name')
     nameCell.appendChild(name)
     
+    makeQuery(QueryType.PLAYER_STATS, row.rowIndex)
+    return row
+}
+
+function formatPoints(game, playerIndex) {
+    var table = document.getElementById("table").getElementsByTagName("tbody")[0]
+    var row = table.rows[playerIndex]
 
     var pointsCell = row.insertCell(1)
-    var pointsText = document.createTextNode("some points")
+    var pointsText = document.createTextNode("Last Game: " + game.points + "pts")
     pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
-
-    return row
 }

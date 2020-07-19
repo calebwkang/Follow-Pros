@@ -8,6 +8,7 @@ function getPlayers()  {
     if (college.value == "default") {
         this.alert("Select a college");
     } else {
+        configureTable()
         makeQuery(QueryType.PLAYERS, college.text);
     }
 }
