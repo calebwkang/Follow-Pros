@@ -1,8 +1,5 @@
-var playersModel = []
-let placeHolderPlayer = {
-    firstName: "first",
-    lastName: "last"
-}
+let placeHolderPlayer = new Player("name", "last", -1)
+let playersModel = [placeHolderPlayer]
 
 function makeQuery(type, data1) {
     var data = null;
@@ -50,38 +47,39 @@ function processPlayersRequest(request, college) {
     var players = request.response.api.players
 
     // filter by college
-    var collegePlayers = filteredByCollege(players, college)
+    filteredByCollege(players, college)
 
     // display data
-    display(collegePlayers);
+    display();
 }
 
 function processPlayerStatsRequest(request, playerIndex) {
     print("player id stats: ")
     let stats = request.response.api.statistics
-    let lastGame = stats[stats.length-1]
-    print(lastGame)
+    print(stats)
 
-    formatPoints(lastGame, playerIndex)
+    playersModel[playerIndex].games = stats
+    formatRow(playerIndex)
 }
 
 /*IN: an array of player objects and a String name of a college
 OUT: an array of players who went to that college*/
 function filteredByCollege(players, college) {
-    var result = [];
-
     for (i=0; i<players.length; i++) {
         if (players[i].collegeName.localeCompare(college) == 0) {
-            result.push(players[i]);
-            playersModel.push(players[i])
+
+            let first = players[i].firstName
+            let last = players[i].lastName
+            let id = players[i].playerId
+
+            let player = new Player(String(first), String(last), id)
+            playersModel.push(player)
         }
     }
-
-    return result;
 }
 
-function display(players) {
-    fillTable(players)
+function display() {
+    fillTable()
 }
 
 
@@ -100,36 +98,30 @@ function configureTable() {
     pointsText.innerHTML = "STATS"
     pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
-
-    playersModel.push(placeHolderPlayer)
 }
 
 
-function fillTable(players) {
-    for (i=0; i<players.length; i++) {
-        var player = players[i]
-        formatRow(player)
+function fillTable() {
+    var players = playersModel
+
+    for (i=1; i<players.length; i++) {
+        makeQuery(QueryType.PLAYER_STATS, i)
     }
 }
 
-function formatRow(player) {
+function formatRow(playerIndex) {
     var table = document.getElementById("table").getElementsByTagName("tbody")[0]
     var row = table.insertRow()
+    let player = playersModel[playerIndex]
+
     
     var nameCell = row.insertCell(0)
     var name = document.createTextNode(player.firstName + " " + player.lastName)
     nameCell.setAttribute('class', 'name')
     nameCell.appendChild(name)
-    
-    makeQuery(QueryType.PLAYER_STATS, row.rowIndex)
-    return row
-}
-
-function formatPoints(game, playerIndex) {
-    var table = document.getElementById("table").getElementsByTagName("tbody")[0]
-    var row = table.rows[playerIndex]
 
     var pointsCell = row.insertCell(1)
+    let game = player.games[player.games.length-1]
     var pointsText = document.createTextNode("Last Game: " + game.points + "pts")
     pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
