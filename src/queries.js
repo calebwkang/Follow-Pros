@@ -1,7 +1,8 @@
-let placeHolderPlayer = new Player("name", "last", -1)
-let playersModel = [placeHolderPlayer]
 
 function makeQuery(type, data1) {
+    let spinner = document.getElementById("loadingSpinner")
+    spinner.style.visibility = 'visible'
+
     var data = null;
 
     var xhr = new XMLHttpRequest();
@@ -16,6 +17,7 @@ function makeQuery(type, data1) {
             switch(type) {
                 case QueryType.PLAYER_STATS:
                     processPlayerStatsRequest(this, data1)
+                    spinner.style.visibility = 'hidden'
                     break
                 case QueryType.PLAYERS:
                     processPlayersRequest(this, data1)
@@ -35,6 +37,7 @@ function makeQuery(type, data1) {
     xhr.setRequestHeader("x-rapidapi-host", "api-nba-v1.p.rapidapi.com");
     xhr.setRequestHeader("x-rapidapi-key", "ab71a41c90mshf97209670d5d649p1c1145jsn9b9737f9b673");
     xhr.send(data);
+
 }
 
 /* this method processes the completed request for 

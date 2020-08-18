@@ -8,3 +8,6 @@ class Player {
         return this.firstName + " " + this.lastName
     }
 }
+
+let placeHolderPlayer = new Player("name", "last", -1)
+let playersModel = [placeHolderPlayer]
