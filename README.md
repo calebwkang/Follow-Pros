@@ -7,3 +7,5 @@ User selects a college, and the stats for pro athletes will display. Right now, 
 
 
 Looking to expand to all Power 5 teams.
+
+Technologies/Frameworks: Bootstrap, etc
