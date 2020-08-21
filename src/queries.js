@@ -62,6 +62,7 @@ function processPlayerStatsRequest(request, playerIndex) {
     print(stats)
 
     playersModel[playerIndex].games = stats
+
     formatRow(playerIndex)
 }
 
@@ -124,8 +125,7 @@ function formatRow(playerIndex) {
     nameCell.appendChild(name)
 
     var pointsCell = row.insertCell(1)
-    let game = player.games[player.games.length-1]
-    var pointsText = document.createTextNode("Last Game: " + game.points + "pts")
+    var pointsText = document.createTextNode("Recent ppg: " + player.getFiveGameAverage())
     pointsCell.setAttribute('class', 'points')
     pointsCell.appendChild(pointsText)
 }
