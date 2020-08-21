@@ -2,6 +2,12 @@ class Player {
     constructor(firstName, lastName, playerId) {
         this.firstName = firstName; this.lastName = lastName;
         this.playerId = playerId; this.games = null;
+
+        this.promise = new Promise((resolve, reject) => {
+            if (this.games != null) {
+                resolve(this)
+            }
+        })
     }
 
     getFullName() {
