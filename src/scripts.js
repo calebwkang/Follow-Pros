@@ -67,13 +67,7 @@ function formatRows() {
     // sort
     let players = playersModel;
     players.sort((a, b) => {
-        if (a.getFiveGameAverage() > b.getFiveGameAverage()) {
-            return -1
-        } else if (a.getFiveGameAverage() < b.getFiveGameAverage()) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return b.getFiveGameAverage()-a.getFiveGameAverage()
     })
 
     for (playerIndex=1; playerIndex<playersModel.length; playerIndex++) {
