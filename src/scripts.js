@@ -3,6 +3,7 @@ async function getPlayers()  {
     // clear table and model
     document.getElementById("table").innerHTML = "<tbody></tbody>"
     playersModel = [placeHolderPlayer]
+    setLoadingButtonText('Loading Players...')
 
 
     // get the college selected
@@ -15,7 +16,7 @@ async function getPlayers()  {
     } else {
         configureTable()
         let isSuccess = await makeQuery(QueryType.PLAYERS, college.text);
-
+        setLoadingButtonText('Loading Stats...')
         if(isSuccess) {
             getPlayerStats()
         }
@@ -77,7 +78,7 @@ function formatRows() {
 
         
         var nameCell = row.insertCell(0)
-        var name = document.createTextNode(player.firstName + " " + player.lastName)
+        var name = document.createTextNode(player.getFullName())
         nameCell.setAttribute('class', 'name')
         nameCell.appendChild(name)
 
@@ -85,8 +86,16 @@ function formatRows() {
         var pointsText = document.createTextNode("Recent ppg: " + player.getFiveGameAverage())
         pointsCell.setAttribute('class', 'points')
         pointsCell.appendChild(pointsText)
+
+        //make selectable
+        nameCell.setAttribute('onclick', 'didSelectCell(' + playerIndex + ')')
+        pointsCell.setAttribute('onclick', 'didSelectCell(' + playerIndex + ')')
     }
 
     let spinner = document.getElementById("loadingSpinner")
     spinner.style.visibility = 'hidden'
+}
+
+function didSelectCell(playerIndex) {
+    alert("selected " + playersModel[playerIndex].getFullName())
 }
