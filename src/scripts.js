@@ -2,7 +2,8 @@
 async function getPlayers()  {
     // clear table and model
     document.getElementById("table").innerHTML = "<tbody></tbody>"
-    playersModel = [placeHolderPlayer]
+    resetModel()
+    playersModel = getModel()
     setLoadingButtonText('Loading Players...')
 
 
@@ -97,5 +98,28 @@ function formatRows() {
 }
 
 function didSelectCell(playerIndex) {
-    alert("selected " + playersModel[playerIndex].getFullName())
+
+    // store model and player index in local storage
+    storeModel()
+    localStorage.setItem('playerIndex', playerIndex)
+
+    window.location.href = "player.html";
+}
+
+function loadPlayerView() {
+    
+    const playerIndex = Number(localStorage.getItem('playerIndex'))
+    const currentPlayer = parsePlayer(playerIndex)
+
+    let header = document.getElementById('playerName')
+    header.innerHTML = currentPlayer.getFullName()
+}
+
+function storeModel() {
+    const players = playersModel
+    localStorage.setItem('model', JSON.stringify(players))
+}
+
+function loadHomePage() {
+    let model
 }

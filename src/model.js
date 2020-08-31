@@ -23,5 +23,6 @@ class Player {
     }
 }
 
-let placeHolderPlayer = new Player("name", "last", -1)
-let playersModel = [placeHolderPlayer]
+let playersModel = getModel()
+
+
